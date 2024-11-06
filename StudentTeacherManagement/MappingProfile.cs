@@ -8,6 +8,7 @@ namespace StudentTeacherManagement
         public MappingProfile()
         {
             CreateMap<Group, GroupDTO>().ReverseMap();
+            CreateMap<Group, CreateGroupDTO>().ReverseMap();
             CreateMap<Student, CreateStudentDTO>().ReverseMap();
             CreateMap<Student, StudentDTO>().ReverseMap();
         }

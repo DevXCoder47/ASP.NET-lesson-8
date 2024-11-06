@@ -14,12 +14,12 @@ namespace StudentTeacherManagement.Storage
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=KOMPUTER\\SQLEXPRESS;Database=StudentTeacherDB;Integrated Security=True;Trusted_Connection=True;TrustServerCertificate=True")
-                .UseLazyLoadingProxies()
-                .EnableSensitiveDataLogging();
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(@"Server=KOMPUTER\\SQLEXPRESS;Database=StudentTeacherDB;Integrated Security=True;Trusted_Connection=True;TrustServerCertificate=True")
+        //        .UseLazyLoadingProxies()
+        //        .EnableSensitiveDataLogging();
+        //}
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Group> Groups { get; set; }

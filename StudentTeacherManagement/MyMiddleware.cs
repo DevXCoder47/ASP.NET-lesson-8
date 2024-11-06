@@ -1,11 +1,16 @@
 ﻿namespace StudentTeacherManagement
 {
-    public class MyMiddleware : IMiddleware
+    public class MyMiddleware
     {
-        public async Task InvokeAsync(HttpContext ctx, RequestDelegate next)
+        private readonly RequestDelegate _next;
+        public MyMiddleware(RequestDelegate next)
         {
-            Console.WriteLine($"My class middleware:{ctx.Request.Host.Host}:{ctx.Request.Host.Port}");
-            await next.Invoke(ctx);
+            _next = next;
+        }
+        public async Task InvokeAsync(HttpContext ctx)
+        {
+            Console.WriteLine($"My class middleware: {ctx.Request.Host.Host} : {ctx.Request.Host.Port}");
+            await _next.Invoke(ctx);
         }
     }
 }

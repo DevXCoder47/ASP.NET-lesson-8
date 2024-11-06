@@ -13,7 +13,6 @@ namespace StudentTeacherManagement.Services
         {
             this.context = context;
         }
-
         public async Task<Group> AddGroup(Group group, CancellationToken cancellationToken = default)
         {
             if (group == null)
@@ -22,41 +21,32 @@ namespace StudentTeacherManagement.Services
             await context.SaveChangesAsync(cancellationToken);
             return group;
         }
-
         public async Task AddStudentToGroup(Guid groupId, Guid studentId, CancellationToken cancellationToken = default)
         {
-            var students = await context.Set<Student>().ToListAsync(cancellationToken);
-            var student = students.FirstOrDefault(s => s.Id == studentId);
+            var student = await context.Students.FindAsync(studentId);
             if (student == null)
-                throw new ArgumentException("Such student doesn't exist");
-            var groups = await context.Set<Group>().ToListAsync(cancellationToken);
-            var group = groups.FirstOrDefault(g => g.Id == groupId);
+                throw new NullReferenceException("Such student doesn't exist");
+            var group = await context.Groups.FindAsync(groupId);
             if(group == null)
-                throw new ArgumentException("Such group doesn't exist");
-            context.Groups.Attach(group);
-            group.Students.Add(student);
-            context.Entry(group).Property(e => e.Students).IsModified = true;
+                throw new NullReferenceException("Such group doesn't exist");
+            student.Group = group;
             await context.SaveChangesAsync(cancellationToken);
         }
-
         public async Task DeleteGroup(Guid id, CancellationToken cancellationToken = default)
         {
-            Group? group = context.Groups.FirstOrDefault(g => g.Id == id);
-            if(group == null)
+            var groups = context.Groups.AsQueryable();
+            var group = groups.FirstOrDefault(g => g.Id == id);
+            if (group == null)
                 throw new ArgumentException("Such group doesn't exist");
             context.Groups.Remove(group);
             await context.SaveChangesAsync(cancellationToken);
         }
-
         public async Task<Group?> GetGroupById(Guid id, CancellationToken cancellationToken = default)
         {
             var groups = context.Groups.AsQueryable();
             var group = await groups.FirstOrDefaultAsync(g => g.Id == id);
-            if(group == null)
-                throw new ArgumentException("Such group doesn't exist");
             return group;
         }
-
         public async Task<IEnumerable<Group>> GetGroups(string? name, int skip, int take, CancellationToken cancellationToken = default)
         {
             var groups = context.Groups.AsQueryable();
