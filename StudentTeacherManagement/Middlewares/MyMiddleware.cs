@@ -1,4 +1,4 @@
-﻿namespace StudentTeacherManagement
+﻿namespace StudentTeacherManagement.Middlewares
 {
     public class MyMiddleware
     {

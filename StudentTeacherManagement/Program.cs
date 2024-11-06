@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using StudentTeacherManagement.Services;
 using StudentTeacherManagement.Core.Interfaces;
 using StudentTeacherManagement;
+using StudentTeacherManagement.Filters;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt => opt.Filters.Add(new RequestFilter()));
 builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
